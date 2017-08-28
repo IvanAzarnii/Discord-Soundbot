@@ -1,0 +1,34 @@
+---
+
+extends: "airbnb-base"
+
+parserOptions:
+  ecmaVersion: 6
+
+env:
+  browser: true
+  jquery: true
+
+rules:
+  max-len:
+    - error
+    - 100
+    - 2
+    - ignoreComments: true
+
+  comma-dangle:
+    - error
+    - never
+
+  curly:
+    - error
+    - multi-or-nest
+    - consistent
+
+  no-plusplus:
+    - error
+    - allowForLoopAfterthoughts: true
+
+  no-underscore-dangle:
+    - error
+    - allowAfterThis: true
