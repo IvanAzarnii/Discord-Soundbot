@@ -12,7 +12,8 @@
     "libsodium-wrappers": "^0.5.2",
     "lowdb": "^0.14.0",
     "node-opus": "^0.2.6",
-    "opusscript": "0.0.3"
+    "opusscript": "0.0.3",
+    "ytdl-core": "^0.17.0"
   },
   "optionalDependencies": {
     "erlpack": "hammerandchisel/erlpack",

@@ -3,12 +3,16 @@ const fs = require('fs');
 const https = require('https');
 const low = require('lowdb');
 const fileAsync = require('lowdb/lib/file-async');
+const ytdl = require('ytdl-core');
 
 class Util {
   constructor() {
     this.db = low('db.json', { storage: fileAsync });
   }
-
+  clearChat()
+  {
+    
+  }
   getSoundsWithExtension() {
     const files = fs.readdirSync('sounds/');
     let sounds = files.filter(sound => config.get('extensions').some(ext => sound.endsWith(ext)));
@@ -41,6 +45,7 @@ class Util {
       '!add                   Add the attached sound',
       '!rename <old> <new>    Rename specified sound',
       '!remove <sound>        Remove specified sound',
+      '!addyt <link to yt>    Broadcast audio from youtube video',
       '```'
     ].join('\n');
   }
@@ -133,6 +138,28 @@ class Util {
       this.db.get('counts').push({ name: playedSound, count: 1 }).value();
     }
   }
+  /* HERE STARTS THE YOUTUBE SOUND PLAYING FEATURE
+  /* IF IT WORKS(PROBABLY NOT) THE STARS HAVE CONVERGENTED YOU CAN TRY TO USE IT
+  /* BUT IT WILL CRASH THE BOT AND IF U WON'T RESTATRT IT DON'T EVEN TRY TO USE THIS FUTURE
+  /*                                                                                                        CHEERS, IVAN AZARNII @ ivanazarnii.me
+  */
+    obtainSoundFromYoutube(link, channel)
+    {
+        var lnk = link.replace('https://www.youtube.com/watch?', '');
+        try{
+
+          ytdl(link, { filter: 'audioonly', format: 'mp4'}).on('error', (err) => { throw(err) }).pipe(fs.createWriteStream("sounds/" + lnk + ".mp3"));
+          channel.sendMessage('Sounds was successfully added! The of sound is ' + lnk + '\n');
+          channel.sendMessage('To rename name of sound use !rename ' + lnk);
+        }
+        
+        catch(err){
+
+          channel.sendMessage(" " + err);
+
+        }
+    }
+        
 }
 
 module.exports = new Util();

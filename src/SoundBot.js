@@ -14,8 +14,9 @@ class SoundBot extends Discord.Client {
 
     this.db.defaults({ counts: [] }).value();
     this._addEventListeners();
-
     this.login(config.get('token'));
+    
+
   }
 
   _addEventListeners() {
@@ -35,8 +36,7 @@ class SoundBot extends Discord.Client {
   playSoundQueue() {
     const nextSound = this.queue.shift();
     const file = Util.getPathForSound(nextSound.name);
-    const voiceChannel = this.channels.get('316284434343133184');
-
+    const voiceChannel = this.channels.get(nextSound.channel);
     voiceChannel.join().then((connection) => {
       const dispatcher = connection.playFile(file);
       dispatcher.on('end', () => {
@@ -46,14 +46,12 @@ class SoundBot extends Discord.Client {
 
         if (this.queue.length > 0)
           this.playSoundQueue();
-        /*else
-          connection.disconnect();*/
+        voiceChannel.leave();
       });
     }).catch((error) => {
       console.log('Error occured!');
       console.log(error);
     });
-  }
 }
-
+}
 module.exports = new SoundBot();

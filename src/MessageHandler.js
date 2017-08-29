@@ -10,6 +10,13 @@ class MessageHandler {
 
       message.channel.sendMessage(Util.commandsList());
     }
+    else if (message.content.startsWith('!addyt '))
+      {
+        message.channel.sendMessage('ACHTUNG!!! ATTENTION!!! AWARE!!! THIS COMMAND WORKS IN TEST MODE');
+        var link = message.content.replace('!addyt ', '');
+        console.log('link is: ' + link);
+        Util.obtainSoundFromYoutube(link, message.channel);
+      }
     else if (message.content === '!mostplayed') {
       message.channel.sendMessage(Util.mostPlayedList());
     } else if (message.content === '!add' && message.attachments.size > 0) {
@@ -23,13 +30,12 @@ class MessageHandler {
     } else {
       const sounds = Util.getSounds();
       if (message.content === '!sounds') {
-        message.author.sendMessage(sounds.map(sound => sound));
+        message.channel.sendMessage(sounds.map(sound => sound));
       } else {
         const voiceChannel = message.member.voiceChannel;
         if (voiceChannel === undefined) {
           message.reply('Join a voice channel first!');
         } else if (message.content === '!stop') {
-          voiceChannel.leave();
           this.bot.queue = [];
         } else if (message.content === '!random') {
           const random = sounds[Math.floor(Math.random() * sounds.length)];
